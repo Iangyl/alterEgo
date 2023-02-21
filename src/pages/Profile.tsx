@@ -1,7 +1,13 @@
 import React from 'react';
 
+import PageWrapper from 'components/PageWrapper/PageWrapper';
+
 const Profile = () => {
-  return <main></main>;
+  return (
+    <PageWrapper>
+      <div>Hello Profile!</div>
+    </PageWrapper>
+  );
 };
 
 export default Profile;

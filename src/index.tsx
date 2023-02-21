@@ -6,6 +6,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import AppLoader from 'components/Loader/Loader';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { persistor, store } from 'redux/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,9 +16,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Suspense fallback={<AppLoader />}>
-        <App />
-      </Suspense>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Suspense fallback={<AppLoader />}>
+            <App />
+          </Suspense>
+        </PersistGate>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>
 );
