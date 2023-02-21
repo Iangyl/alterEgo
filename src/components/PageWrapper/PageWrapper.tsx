@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { Button } from '@mui/material';
@@ -7,10 +7,34 @@ import UserIcon from 'assets/User';
 import styles from './PageWrapper.module.sass';
 
 const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
+  const [showHeader, setShowHeader] = useState(true);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
   const auth = false;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      if (prevScrollPos > currentScrollPos) {
+        setShowHeader(true);
+      } else {
+        setShowHeader(false);
+      }
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [prevScrollPos]);
+
   return (
     <div className={styles.wrapper}>
-      <header className={styles.header}>
+      <header
+        className={`${styles.header} ${
+          showHeader ? styles.headerShow : styles.headerHide
+        }`}
+      >
         <h3>NewsPage</h3>
         <ul>
           <li>
