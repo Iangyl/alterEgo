@@ -10,15 +10,15 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { configureStore } from '@reduxjs/toolkit';
-import newsReducer from './news/newsSlice';
+import appReducer from './app/appSlice';
 
 const persistConfig = {
-  key: 'news',
+  key: 'app',
   version: 1,
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, newsReducer);
+const persistedReducer = persistReducer(persistConfig, appReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,

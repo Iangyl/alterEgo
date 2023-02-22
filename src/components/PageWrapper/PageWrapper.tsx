@@ -5,11 +5,22 @@ import { Button } from '@mui/material';
 import UserIcon from 'assets/User';
 
 import styles from './PageWrapper.module.sass';
+import { useAppDispatch } from 'redux/hooks';
+import useGetNews from 'hooks/useGetNews';
+import { setNews } from 'redux/app/appSlice';
 
 const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
+  const news = useGetNews();
+  const dispatch = useAppDispatch();
   const [showHeader, setShowHeader] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const auth = false;
+
+  useEffect(() => {
+    if (news && news?.length > 0) {
+      dispatch(setNews(news));
+    }
+  }, [news]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +46,9 @@ const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
           showHeader ? styles.headerShow : styles.headerHide
         }`}
       >
-        <h3>NewsPage</h3>
+        <h3>
+          <NavLink to="/">NewsPage</NavLink>
+        </h3>
         <ul>
           <li>
             <NavLink className={styles.link} to="/">

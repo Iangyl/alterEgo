@@ -19,12 +19,9 @@ const NewsBlock = ({ type }: { type: NewsBlockType }) => {
         to fight Big Oil. They’ve found themselves in a two-front battle against
         fossil fuels and NGO bosses.
       </p>
-      <div>
-        BY{' '}
-        <span className={styles[classesCollection.author]}>JULES TAYLOR</span>{' '}
-        <span className={styles[classesCollection.date]}>
-          FEBRUARY 21, 2023
-        </span>
+      <div className={styles.details}>
+        BY <span className={styles.author}>JULES TAYLOR</span>{' '}
+        <span className={styles.date}>FEBRUARY 21, 2023</span>
       </div>
     </article>
   );

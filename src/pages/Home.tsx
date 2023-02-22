@@ -13,12 +13,6 @@ const Home = () => {
           <NewsBlock type="short" />
           <NewsBlock type="short" />
           <NewsBlock type="short" />
-          <NewsBlock type="short" />
-          <NewsBlock type="short" />
-          <NewsBlock type="short" />
-          <NewsBlock type="short" />
-          <NewsBlock type="short" />
-          <NewsBlock type="short" />
         </LatestNewsList>
       </div>
     </PageWrapper>
