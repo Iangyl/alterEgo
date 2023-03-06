@@ -1,20 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-import { Button } from '@mui/material';
+import { Button, Popover } from '@mui/material';
 import UserIcon from 'assets/User';
 
 import styles from './PageWrapper.module.sass';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import useGetNews from 'hooks/useGetNews';
-import { setNews } from 'redux/app/appSlice';
+import { setNews, setSession } from 'redux/app/appSlice';
 
 const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
   const news = useGetNews();
+  const session = useAppSelector((state) => state.session);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [showHeader, setShowHeader] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const auth = false;
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogOut = () => {
+    dispatch(setSession({ status: 'inactive', accessStatus: 'closed' }));
+    navigate('/');
+  };
 
   useEffect(() => {
     if (news && news?.length > 0) {
@@ -61,14 +80,16 @@ const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
             </NavLink>
           </li>
         </ul>
-        {auth ? (
-          <div className={styles.user}>
+        {session.accessStatus === 'open' ? (
+          <button className={styles.user} onClick={handleClick}>
             <UserIcon width={24} height={24} />
             <div>admin</div>
-          </div>
+          </button>
         ) : (
           <div className={styles.user}>
-            <Button variant="outlined">Log In</Button>
+            <Button variant="outlined" onClick={() => navigate('/sign-in')}>
+              Log In
+            </Button>
           </div>
         )}
       </header>
@@ -76,6 +97,29 @@ const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
       <footer className={styles.footer}>
         <p>&copy; 2023 NewsPage. All rights reserved.</p>
       </footer>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <button
+          className={`${styles.popoverItem} ${styles.default}`}
+          onClick={() => navigate('/profile')}
+        >
+          Profile
+        </button>
+        <button
+          className={`${styles.popoverItem} ${styles.dangerous}`}
+          onClick={handleLogOut}
+        >
+          Log out
+        </button>
+      </Popover>
     </div>
   );
 };

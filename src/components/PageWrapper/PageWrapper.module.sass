@@ -37,6 +37,10 @@
       display: flex
       align-items: center
       gap: 15px
+      border: none
+      background: transparent
+      &:hover
+        cursor: pointer
 
   .main
     max-width: 1440px
@@ -64,3 +68,16 @@
   opacity: 0
   transform: translateY(-100%)
   transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out
+
+.popoverItem
+  border: none
+  width: 100%
+  padding: 5px
+  &:hover
+    cursor: pointer
+.default
+  color: black
+  background-color: white
+.dangerous
+  color: white
+  background-color: red

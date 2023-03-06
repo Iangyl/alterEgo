@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import PageWrapper from 'components/PageWrapper/PageWrapper';
 import NewsList from 'components/NewsList/NewsList';
@@ -8,15 +8,10 @@ import AppLoader from 'components/Loader/Loader';
 
 const News = () => {
   const news = useAppSelector((state) => state.news);
+
   return (
     <PageWrapper>
-      <NewsList>
-        {news ? (
-          news.map((item) => <NewsPost key={item.id} {...item} />)
-        ) : (
-          <AppLoader />
-        )}
-      </NewsList>
+      <NewsList news={news} />
     </PageWrapper>
   );
 };
