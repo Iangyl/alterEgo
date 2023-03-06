@@ -5,9 +5,11 @@ import styles from './NewsList.module.sass';
 import AppLoader from 'components/Loader/Loader';
 import NewsPost from 'components/NewsPost/NewsPost';
 import INews from 'lib/INews.types';
+import { useTranslation } from 'react-i18next';
 
 const NewsList = ({ news }: { news: INews[] }) => {
   const itemsPerPage = 5;
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [isHidden, setIsHidden] = useState(false);
 
@@ -27,7 +29,7 @@ const NewsList = ({ news }: { news: INews[] }) => {
 
   return (
     <section className={styles.newsList}>
-      <h1>News</h1>
+      <h1>{t('News')}</h1>
       <div className={styles.list}>
         {newsToShow ? (
           newsToShow.map((item) => <NewsPost key={item.id} {...item} />)
@@ -37,7 +39,7 @@ const NewsList = ({ news }: { news: INews[] }) => {
         <div>
           {!isHidden && (
             <Button onClick={handleClick} variant="contained">
-              Upload more
+              {t('Upload more')}
             </Button>
           )}
         </div>

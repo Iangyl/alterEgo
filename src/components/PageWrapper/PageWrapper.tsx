@@ -8,12 +8,17 @@ import styles from './PageWrapper.module.sass';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import useGetNews from 'hooks/useGetNews';
 import { setNews, setSession } from 'redux/app/appSlice';
+import { useTranslation } from 'react-i18next';
+import UnitedKingdomIcon from 'assets/UnitedKingdom';
+import UkraineIcon from 'assets/Ukraine';
 
 const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
   const news = useGetNews();
+  const { t, i18n } = useTranslation();
   const session = useAppSelector((state) => state.session);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [lang, setLang] = useState(i18n.language);
   const [showHeader, setShowHeader] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -21,6 +26,18 @@ const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
   );
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
+
+  const handleTranslation = () => {
+    if (lang === 'en') {
+      i18n.changeLanguage('ua-UA');
+      setLang('ua');
+    } else {
+      i18n.changeLanguage('en-US');
+      setLang('en');
+    }
+  };
+
+  console.log(i18n.language);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,27 +88,36 @@ const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
         <ul>
           <li>
             <NavLink className={styles.link} to="/">
-              Home
+              {t('Home')}
             </NavLink>
           </li>
           <li>
             <NavLink className={styles.link} to="/news">
-              News
+              {t('News')}
             </NavLink>
           </li>
         </ul>
-        {session.accessStatus === 'open' ? (
-          <button className={styles.user} onClick={handleClick}>
-            <UserIcon width={24} height={24} />
-            <div>admin</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <button onClick={handleTranslation} className={styles.lang}>
+            {lang === 'en' ? (
+              <UnitedKingdomIcon width={24} height={24} />
+            ) : (
+              <UkraineIcon width={24} height={24} />
+            )}
           </button>
-        ) : (
-          <div className={styles.user}>
-            <Button variant="outlined" onClick={() => navigate('/sign-in')}>
-              Log In
-            </Button>
-          </div>
-        )}
+          {session.accessStatus === 'open' ? (
+            <button className={styles.user} onClick={handleClick}>
+              <UserIcon width={24} height={24} />
+              <div>admin</div>
+            </button>
+          ) : (
+            <div className={styles.user}>
+              <Button variant="outlined" onClick={() => navigate('/sign-in')}>
+                {t('Log in')}
+              </Button>
+            </div>
+          )}
+        </div>
       </header>
       <main className={styles.main}>{children}</main>
       <footer className={styles.footer}>
@@ -111,13 +137,13 @@ const PageWrapper = ({ children }: { children: JSX.Element | JSX.Element }) => {
           className={`${styles.popoverItem} ${styles.default}`}
           onClick={() => navigate('/profile')}
         >
-          Profile
+          {t('Profile')}
         </button>
         <button
           className={`${styles.popoverItem} ${styles.dangerous}`}
           onClick={handleLogOut}
         >
-          Log out
+          {t('Log out')}
         </button>
       </Popover>
     </div>

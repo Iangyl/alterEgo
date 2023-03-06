@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
-
-import styles from './SignInForm.module.sass';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'redux/hooks';
 import { setSession } from 'redux/app/appSlice';
+import { useTranslation } from 'react-i18next';
+
+import styles from './SignInForm.module.sass';
 
 const correctPassword = '12345';
 const correctUsername = 'admin';
 
 const SignInForm = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -54,13 +56,13 @@ const SignInForm = () => {
   return (
     <Box>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h2 className={styles.title}>Sign in</h2>
+        <h2 className={styles.title}>{t('Sign in')}</h2>
         <TextField
           value={username}
           type="username"
           name="username"
           className={styles.username}
-          label="Username"
+          label={t('Username')}
           onChange={handleChange}
           onFocus={() =>
             setValidation((prev) => {
@@ -75,14 +77,14 @@ const SignInForm = () => {
               : styles['warning-inactive']
           }`}
         >
-          Username is incorrect!
+          {t('Username is incorrect!')}
         </p>
         <TextField
           value={password}
           type="password"
           name="password"
           className={styles.password}
-          label="Password"
+          label={t('Password')}
           onChange={handleChange}
           onFocus={() =>
             setValidation((prev) => {
@@ -97,10 +99,10 @@ const SignInForm = () => {
               : styles['warning-inactive']
           }`}
         >
-          Password is incorrect!
+          {t('Password is incorrect!')}
         </p>
         <Button className={styles.submit} type="submit" variant="contained">
-          Submit
+          {t('Submit')}
         </Button>
       </form>
     </Box>
